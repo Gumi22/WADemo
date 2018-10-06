@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:WeatherApp"
+             x:Class="WeatherApp.WeatherForeCastDetailPage"
+             Title="{Binding Title}">
+
+    <ContentPage.BindingContext>
+        <local:WeatherForeCastViewModel />
+    </ContentPage.BindingContext>
+
+
+    <StackLayout>
+
+        <Label
+            Text="Details: " />
+
+        <StackLayout
+            Orientation="Horizontal">
+            <Label Text="Icon: " />
+            <Label
+                HorizontalTextAlignment="End"
+                HorizontalOptions="EndAndExpand"
+                Text="{Binding WeatherForeCast.Icon}" />
+        </StackLayout>
+        <StackLayout
+            Orientation="Horizontal">
+            <Label Text="Temperature: " />
+            <Label
+                HorizontalTextAlignment="End"
+                HorizontalOptions="EndAndExpand"
+                Text="{Binding WeatherForeCast.Temperature}" />
+        </StackLayout>
+        <StackLayout
+            Orientation="Horizontal">
+            <Label Text="Time: " />
+            <Label
+                HorizontalTextAlignment="End"
+                HorizontalOptions="EndAndExpand"
+                Text="{Binding WeatherForeCast.Time}" />
+        </StackLayout>
+        <StackLayout
+            Orientation="Horizontal">
+            <Label Text="Cloud cover: " />
+            <Label
+                HorizontalTextAlignment="End"
+                HorizontalOptions="EndAndExpand"
+                Text="{Binding WeatherForeCast.CloudCover}" />
+        </StackLayout>
+        <StackLayout
+            Orientation="Horizontal">
+            <Label Text="Condition: " />
+            <Label
+                HorizontalTextAlignment="End"
+                HorizontalOptions="EndAndExpand"
+                Text="{Binding WeatherForeCast.Condition}" />
+        </StackLayout>
+        <StackLayout
+            Orientation="Horizontal">
+            <Label Text="Humidity: " />
+            <Label
+                HorizontalTextAlignment="End"
+                HorizontalOptions="EndAndExpand"
+                Text="{Binding WeatherForeCast.Humidity}" />
+        </StackLayout>
+        <StackLayout
+            Orientation="Horizontal">
+            <Label Text="Pressure: " />
+            <Label
+                HorizontalTextAlignment="End"
+                HorizontalOptions="EndAndExpand"
+                Text="{Binding WeatherForeCast.Pressure}" />
+        </StackLayout>
+        <StackLayout
+            Orientation="Horizontal">
+            <Label Text="Rain: " />
+            <Label
+                HorizontalTextAlignment="End"
+                HorizontalOptions="EndAndExpand"
+                Text="{Binding WeatherForeCast.Rain}" />
+        </StackLayout>
+        <StackLayout
+            Orientation="Horizontal">
+            <Label Text="Snow: " />
+            <Label
+                HorizontalTextAlignment="End"
+                HorizontalOptions="EndAndExpand"
+                Text="{Binding WeatherForeCast.Snow}" />
+        </StackLayout>
+        <StackLayout
+            Orientation="Horizontal">
+            <Label Text="Wind direction: " />
+            <Label
+                HorizontalTextAlignment="End"
+                HorizontalOptions="EndAndExpand"
+                Text="{Binding WeatherForeCast.WindDirection}" />
+        </StackLayout>
+        <StackLayout
+            Orientation="Horizontal">
+            <Label Text="Wind speed: " />
+            <Label
+                HorizontalTextAlignment="End"
+                HorizontalOptions="EndAndExpand"
+                Text="{Binding WeatherForeCast.WindSpeed}" />
+        </StackLayout>
+    </StackLayout>
+
+</ContentPage>
