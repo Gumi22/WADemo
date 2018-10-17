@@ -35,7 +35,17 @@ namespace WeatherApp
 
         public WeatherForeCast()
         {
-            SetRandomValues();
+            Icon = "";
+            Condition = 0;
+            Time = DateTime.Now;
+            Temperature = 0f;
+            Humidity = 0f;
+            Pressure = 0f;
+            CloudCover = 0f;
+            WindDirection = 0f;
+            WindSpeed = 0f;
+            Rain = 0f;
+            Snow = 0f;
         }
 
         private void SetRandomValues()

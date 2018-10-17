@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using WeatherApp;
 using Xamarin.Forms;
 
@@ -23,23 +25,12 @@ namespace WeatherApp
         {
             Title = "Forecasts";
 
-            _weatherForeCastList = new ObservableCollection<WeatherForeCast>
-            {
-                new WeatherForeCast(),
-                new WeatherForeCast(),
-                new WeatherForeCast(),
-                new WeatherForeCast(),
-                new WeatherForeCast(),
-                new WeatherForeCast(),
-                new WeatherForeCast(),
-                new WeatherForeCast(),
-                new WeatherForeCast()
-            };
+            LoadDataCommand = new Command(async () => await ExecuteLoadDataCommand());
 
-            LoadDataCommand = new Command(ExecuteLoadDataCommand);
+            LoadDataCommand.Execute(this);
         }
 
-        private void ExecuteLoadDataCommand()
+        public async Task ExecuteLoadDataCommand()
         {
             if (IsBusy)
             {
@@ -49,7 +40,8 @@ namespace WeatherApp
             try
             {
                 IsBusy = true;
-                WeatherForeCastList.Add(new WeatherForeCast());
+                var forecasts = await new WeatherForeCastService().GetItemsAsync();
+                WeatherForeCastList = new ObservableCollection<WeatherForeCast>(forecasts);
             }
             catch (Exception e)
             {
