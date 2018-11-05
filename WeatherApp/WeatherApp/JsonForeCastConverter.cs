@@ -32,28 +32,23 @@ namespace WeatherApp
                         Debug.WriteLine(jsonForecast["rain"]);
 
                         //Horrible, change this:
-                        try{forecast.CloudCover = jsonForecast["clouds"]["all"].Value<double?>().Value;}
-                        catch{}
-                        try{forecast.Condition = jsonForecast["weather"][0]["id"].Value<int?>().Value;}
-                        catch { }
-                        try{forecast.Humidity = jsonForecast["main"]["humidity"].Value<double?>().Value; }
-                        catch { }
-                        try{forecast.Icon = jsonForecast["weather"][0]["icon"].Value<String>(); }
-                        catch { }
-                        try{forecast.Pressure = jsonForecast["main"]["pressure"].Value<double?>().Value; }
-                        catch { }
-                        try{forecast.Rain = jsonForecast["rain"]["3h"].Value<double>(); }
-                        catch { }
-                        try{forecast.Snow = jsonForecast["snow"]["3h"].Value<double?>().Value; }
-                        catch { }
-                        try{forecast.Temperature = jsonForecast["main"]["temp"].Value<double?>().Value; }
-                        catch { }
-                        try{forecast.Time = jsonForecast["dt"].Value<DateTime?>().Value; }
-                        catch { }
-                        try{forecast.WindDirection = jsonForecast["wind"]["deg"].Value<double?>().Value; }
-                        catch { }
-                        try{forecast.WindSpeed = jsonForecast["wind"]["speed"].Value<double?>().Value; }
-                        catch { }
+                        try
+                        {
+                            forecast.CloudCover = jsonForecast["clouds"]?["all"]?.Value<double>() ?? 0f;
+                            forecast.Condition = jsonForecast["weather"]?[0]?["id"]?.Value<int>() ?? 0;
+                            forecast.Humidity = jsonForecast["main"]?["humidity"]?.Value<double>() ?? 0f;
+                            forecast.Icon = jsonForecast["weather"]?[0]?["icon"]?.Value<string>() ?? "";
+                            forecast.Pressure = jsonForecast["main"]?["pressure"]?.Value<double>() ?? 0f;
+                            forecast.Rain = jsonForecast["rain"]?["3h"]?.Value<double>() ?? 0f;
+                            forecast.Snow = jsonForecast["snow"]?["3h"]?.Value<double>() ?? 0f;
+                            forecast.Temperature = jsonForecast["main"]?["temp"]?.Value<double>() ?? 0f;
+                            forecast.WindDirection = jsonForecast["wind"]?["deg"]?.Value<double>() ?? 0f;
+                            forecast.WindSpeed = jsonForecast["wind"]?["speed"]?.Value<double>() ?? 0f;
+                        }
+                        catch(Exception e)
+                        {
+                            Debug.WriteLine("An Error occured while parsing json: " + e.StackTrace);
+                        }
 
                         forecasts.Add(forecast);
                     }

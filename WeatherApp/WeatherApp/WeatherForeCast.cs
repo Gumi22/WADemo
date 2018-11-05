@@ -11,7 +11,7 @@ namespace WeatherApp
         private string _icon;
         private int _condition;
         private DateTime _time;
-        private double _temperature; // in C°
+        private double _temperature; // in unit
         private double _pressure; // in hpA
         private double _humidity; // in percent
         private double _cloudCover; // in percent

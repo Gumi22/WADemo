@@ -1,16 +1,20 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:WeatherApp"
              x:Class="WeatherApp.MainPage"
              Title="{Binding Title}">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="Options"  Icon="menu_icon.jpg" Clicked="OpenSettings_Clicked"/>
+    </ContentPage.ToolbarItems>
+
     <ContentPage.BindingContext>
-        <local:WeatherForeCastListViewModel></local:WeatherForeCastListViewModel>
+        <local:WeatherForeCastListViewModel />
     </ContentPage.BindingContext>
 
-
-    <StackLayout>
+    <ContentPage.Content>
         <ListView
             x:Name="DemoList"
             ItemsSource="{Binding WeatherForeCastList}"
@@ -26,18 +30,18 @@
                         <StackLayout Padding="10">
                             <Label
                                 Text="{Binding .Time}"
-                                FontAttributes="Bold"/>
+                                FontAttributes="Bold" />
                             <Label
                                 Text="{Binding .Icon}"
-                                FontAttributes="Bold"/>
+                                FontAttributes="Bold" />
                             <Label
                                 Text="{Binding .Temperature}"
-                                FontAttributes="Bold"/>
+                                FontAttributes="Bold" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </StackLayout>
+    </ContentPage.Content>
 
 </ContentPage>

@@ -12,6 +12,21 @@ namespace WeatherApp
         public MainPage()
         {
             InitializeComponent();
+
+            Options.IsEnabled = DependencyService.Get<ISettingsService>().SettingsDialogueAvailable;
+
+            DependencyService.Get<ISettingsService>().PropertyChanged += async (sender, e) =>
+            {
+                DemoList.BeginRefresh();
+
+                WeatherForeCastService service = new WeatherForeCastService();
+                service.ApiCity = SystemSettings.City;
+                service.ApiUnitFormat = SystemSettings.MeasurementUnit;
+                IEnumerable<WeatherForeCast> list = await service.GetItemsAsync();
+                DemoList.ItemsSource = list;
+
+                DemoList.EndRefresh();
+            }; 
         }
 
         private void ItemClick(object sender, SelectedItemChangedEventArgs e)
@@ -22,6 +37,11 @@ namespace WeatherApp
                 ((Application.Current as App)?.MainPage as NavigationPage)?.PushAsync(new WeatherForeCastDetailPage(item));
                 DemoList.SelectedItem = null;
             }
+        }
+
+        void OpenSettings_Clicked(object sender, System.EventArgs e)
+        {
+            DependencyService.Get<ISettingsService>().DisplaySettings();
         }
     }
 }

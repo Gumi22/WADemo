@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+   xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <EditTextPreference
+    android:key="preference_city"
+    android:title="City"
+    android:summary="Stadt dessen Wetterdaten angezeigt werden sollen, z.B. Vienna,at"
+    android:dialogTitle="City"
+    android:defaultValue="Vienna,at"/>
+
+  <ListPreference
+    android:key="preference_measurement_unit"
+    android:title="Units"
+    android:summary="Einheiten in denen die Werte angezeigt werden sollen"
+    android:entries="@array/unitEntries"
+    android:entryValues="@array/unitValues"
+    android:defaultValue="2"/>
+  
+</PreferenceScreen>

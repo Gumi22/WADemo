@@ -11,24 +11,22 @@ namespace WeatherApp
     class WeatherForeCastService
     {
         private string _apiKey = "APPID=5eb65027eb18fb0a14326ba27bfc58bc";
-        private string _apiCity = "q=Vienna,at";
-        private string _apiUnitFormat = "units=metric";
+        private string _apiCity = "Vienna,at";
+        private string _apiUnitFormat = "metric";
         private string _apiBaseUrl = "https://api.openweathermap.org/data/2.5/forecast";
 
-        public string ApiUrl { get; set; }
-
-        
+        public string ApiUrl => $"{_apiBaseUrl}?q={_apiCity}&{_apiKey}&units={_apiUnitFormat}";
+        public string ApiCity { get => _apiCity; set => _apiCity = value; }
+        public string ApiUnitFormat { get => _apiUnitFormat; set => _apiUnitFormat = value; }
 
         public WeatherForeCastService()
-        {
-            ApiUrl = $"{_apiBaseUrl}?{_apiCity}&{_apiKey}&{_apiUnitFormat}";
-        }
+        {}
 
         public async Task<IEnumerable<WeatherForeCast>> GetItemsAsync()
         {
             try
             {
-                var request = WebRequest.Create(ApiUrl);
+                var request = WebRequest.Create($"{_apiBaseUrl}?q={_apiCity}&{_apiKey}&units={_apiUnitFormat}");
                 request.ContentType = "application/json";
                 request.Method = "GET";
 
@@ -51,7 +49,7 @@ namespace WeatherApp
             }
             catch (WebException webException)
             {
-                Debug.WriteLine($"Error while loading data: {webException.Message}");
+                Debug.WriteLine($"Error while loading data: {webException.Message} : {webException.StackTrace}");
                 return null;
             }
         }
