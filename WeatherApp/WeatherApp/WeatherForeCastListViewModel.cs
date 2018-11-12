@@ -11,12 +11,17 @@ namespace WeatherApp
 {
     class WeatherForeCastListViewModel : BaseViewModel
     {
-        private ObservableCollection<WeatherForeCast> _weatherForeCastList;
+        private ObservableCollection<WeatherForeCastListItemViewModel> _weatherForeCastList;
 
-        public ObservableCollection<WeatherForeCast> WeatherForeCastList
+        public ObservableCollection<WeatherForeCastListItemViewModel> WeatherForeCastList
         {
             get => _weatherForeCastList;
             set => SetProperty(ref _weatherForeCastList, value);
+        }
+
+        public bool IsFirst(WeatherForeCastListItemViewModel vm)
+        {
+            return _weatherForeCastList.IndexOf(vm) == 0;
         }
 
         public Command LoadDataCommand { get; set; }
@@ -41,7 +46,12 @@ namespace WeatherApp
             {
                 IsBusy = true;
                 var forecasts = await new WeatherForeCastService().GetItemsAsync();
-                WeatherForeCastList = new ObservableCollection<WeatherForeCast>(forecasts);
+                var itemList = new List<WeatherForeCastListItemViewModel>();
+                foreach (var fc in forecasts)
+                {
+                    itemList.Add(new WeatherForeCastListItemViewModel(this, fc));
+                }
+                WeatherForeCastList = new ObservableCollection<WeatherForeCastListItemViewModel>(itemList);
             }
             catch (Exception e)
             {

@@ -6,6 +6,44 @@
              x:Class="WeatherApp.MainPage"
              Title="{Binding Title}">
 
+    <ContentPage.Resources>
+        <DataTemplate x:Key="OtherRowTemplate">
+            <ViewCell>
+                <StackLayout Padding="10">
+                    <Label
+                        Text="{Binding .Time}"
+                        FontAttributes="Bold" />
+                    <Label
+                        Text="{Binding .Icon}"
+                        FontAttributes="Bold" />
+                    <Label
+                        Text="{Binding .Temperature}"
+                        FontAttributes="Bold" />
+                </StackLayout>
+            </ViewCell>
+        </DataTemplate>
+        <DataTemplate x:Key="FirstRowTemplate">
+            <ViewCell>
+                <StackLayout Padding="10"
+                             BackgroundColor="Olive">
+                    <Label
+                        Text="{Binding .Time}"
+                        FontAttributes="Bold" />
+                    <Label
+                        Text="{Binding .Icon}"
+                        FontAttributes="Bold" />
+                    <Label
+                        Text="{Binding .Temperature}"
+                        FontAttributes="Bold" />
+                </StackLayout>
+            </ViewCell>
+        </DataTemplate>
+        <local:WeatherForeCastListViewDataTemplateSelector
+            x:Key="RowDataTemplateSelector"
+            FirstRowTemplate="{StaticResource FirstRowTemplate}"
+            OtherRowTemplate="{StaticResource OtherRowTemplate}"/>
+    </ContentPage.Resources>
+
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="Options"  Icon="menu_icon.jpg" Clicked="OpenSettings_Clicked"/>
     </ContentPage.ToolbarItems>
@@ -23,25 +61,8 @@
             IsPullToRefreshEnabled="True"
             RefreshCommand="{Binding LoadDataCommand}"
             IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-            ItemSelected="ItemClick">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Padding="10">
-                            <Label
-                                Text="{Binding .Time}"
-                                FontAttributes="Bold" />
-                            <Label
-                                Text="{Binding .Icon}"
-                                FontAttributes="Bold" />
-                            <Label
-                                Text="{Binding .Temperature}"
-                                FontAttributes="Bold" />
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            ItemSelected="ItemClick"
+            ItemTemplate="{StaticResource RowDataTemplateSelector}"/>
     </ContentPage.Content>
 
 </ContentPage>

@@ -33,8 +33,8 @@ namespace WeatherApp
         {
             if (e.SelectedItem != null)
             {
-                var item = e.SelectedItem as WeatherForeCast;
-                ((Application.Current as App)?.MainPage as NavigationPage)?.PushAsync(new WeatherForeCastDetailPage(item));
+                var item = e.SelectedItem as WeatherForeCastListItemViewModel;
+                ((Application.Current as App)?.MainPage as NavigationPage)?.PushAsync(new WeatherForeCastDetailPage(item?.Forecast));
                 DemoList.SelectedItem = null;
             }
         }
