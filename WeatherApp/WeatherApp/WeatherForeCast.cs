@@ -10,6 +10,7 @@ namespace WeatherApp
     {
         private string _icon;
         private int _condition;
+        private string _description;
         private DateTime _time;
         private double _temperature; // in unit
         private double _pressure; // in hpA
@@ -21,7 +22,8 @@ namespace WeatherApp
         private double _snow; //snow in mm for the last 3 hours
 
         public string Icon { get => _icon; set => SetProperty(ref _icon, value); }
-        public int Condition { get => _condition; set => SetProperty(ref _condition ,value); }
+        public int Condition{ get => _condition; set => SetProperty(ref _condition, value); }
+        public string Description { get => _description; set => SetProperty(ref _description, value); }
         public DateTime Time { get => _time; set => SetProperty(ref _time, value); }
         public double Temperature { get => _temperature; set => SetProperty(ref _temperature, value); }
         public double Pressure { get => _pressure; set => SetProperty(ref _pressure, value); }
@@ -37,6 +39,7 @@ namespace WeatherApp
         {
             Icon = "";
             Condition = 0;
+            Description = "";
             Time = DateTime.Now;
             Temperature = 0f;
             Humidity = 0f;
@@ -53,6 +56,7 @@ namespace WeatherApp
             Random rnd = new Random();
             Icon = "C://" + rnd.Next();
             Condition = rnd.Next();
+            Description = "Rain times " + rnd.Next(100);
             Time = RandomDay(rnd);
             Temperature = rnd.NextDouble();
             Humidity = rnd.NextDouble();

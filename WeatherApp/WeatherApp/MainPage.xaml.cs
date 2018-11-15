@@ -15,16 +15,10 @@ namespace WeatherApp
 
             Options.IsEnabled = DependencyService.Get<ISettingsService>().SettingsDialogueAvailable;
 
-            DependencyService.Get<ISettingsService>().PropertyChanged += async (sender, e) =>
+            DependencyService.Get<ISettingsService>().PropertyChanged += (sender, e) =>
             {
                 DemoList.BeginRefresh();
-
-                WeatherForeCastService service = new WeatherForeCastService();
-                service.ApiCity = SystemSettings.City;
-                service.ApiUnitFormat = SystemSettings.MeasurementUnit;
-                IEnumerable<WeatherForeCast> list = await service.GetItemsAsync();
-                DemoList.ItemsSource = list;
-
+                DemoList.RefreshCommand.Execute(DemoList);
                 DemoList.EndRefresh();
             }; 
         }
@@ -33,13 +27,18 @@ namespace WeatherApp
         {
             if (e.SelectedItem != null)
             {
-                var item = e.SelectedItem as WeatherForeCastListItemViewModel;
-                ((Application.Current as App)?.MainPage as NavigationPage)?.PushAsync(new WeatherForeCastDetailPage(item?.Forecast));
+                if (e.SelectedItem is WeatherForeCastListItemViewModel item)
+                {
+                    if (item.WeatherForeCast != null)
+                    {
+                        ((Application.Current as App)?.MainPage as NavigationPage)?.PushAsync(new WeatherForeCastDetailPage(item.WeatherForeCast));
+                    }
+                }
                 DemoList.SelectedItem = null;
             }
         }
 
-        void OpenSettings_Clicked(object sender, System.EventArgs e)
+        private void OpenSettings_Clicked(object sender, System.EventArgs e)
         {
             DependencyService.Get<ISettingsService>().DisplaySettings();
         }

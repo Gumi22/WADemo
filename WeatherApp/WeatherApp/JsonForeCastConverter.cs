@@ -9,11 +9,11 @@ namespace WeatherApp
 {
     class JsonForeCastConverter
     {
-        public List<WeatherForeCast> GetForeCasts(Stream JsonStream)
+        public List<WeatherForeCast> GetForeCasts(Stream jsonStream)
         {
             var forecasts = new List<WeatherForeCast>();
 
-            using (StreamReader sr = new StreamReader(JsonStream))
+            using (StreamReader sr = new StreamReader(jsonStream))
             {
                 var jsonString = sr.ReadToEnd();
                 if (string.IsNullOrWhiteSpace(jsonString))
@@ -30,10 +30,11 @@ namespace WeatherApp
                     {
                         WeatherForeCast forecast = new WeatherForeCast();
                         Debug.WriteLine(jsonForecast["rain"]);
-
-                        //Horrible, change this:
+                        
                         try
                         {
+                            Debug.WriteLine("Loading forecast");
+                            forecast.Description = jsonForecast["weather"]?[0]?["description"]?.Value<string>() ?? "";
                             forecast.CloudCover = jsonForecast["clouds"]?["all"]?.Value<double>() ?? 0f;
                             forecast.Condition = jsonForecast["weather"]?[0]?["id"]?.Value<int>() ?? 0;
                             forecast.Humidity = jsonForecast["main"]?["humidity"]?.Value<double>() ?? 0f;

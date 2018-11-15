@@ -12,7 +12,7 @@ namespace WeatherApp
         public WeatherForeCastDetailPage(WeatherForeCast weatherForeCast)
         {
             InitializeComponent();
-            Title = "Forecast detail";
+            Title = "Weather Details";
             this.BindingContext = new WeatherForeCastViewModel(weatherForeCast);
         }
     }

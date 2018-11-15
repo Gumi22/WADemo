@@ -13,96 +13,105 @@
 
     <StackLayout>
 
-        <Label
-            Text="Details: " />
+        <StackLayout
+            Orientation="Horizontal">
+            <Label
+                Text="Forecast for "
+                FontSize="20"  />
+            <Label
+                Text="{Binding .Time}"
+                FontSize="20" />
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal">
+            <Image Source="{Binding .Icon}"
+                   WidthRequest="75"
+                   HeightRequest="75" />
+            <StackLayout Padding="10">
+                <Label
+                    Text="{Binding .Description}"
+                    FontSize="20" />
+                <Label
+                    Text="{Binding .Temperature}"
+                    FontSize="20" />
+            </StackLayout>
+        </StackLayout>
 
         <StackLayout
             Orientation="Horizontal">
-            <Label Text="Icon: " />
+            <Label Text="Cloud cover: "
+                   FontSize="20"  />
             <Label
                 HorizontalTextAlignment="End"
                 HorizontalOptions="EndAndExpand"
-                Text="{Binding WeatherForeCast.Icon}" />
+                Text="{Binding CloudCover}"
+                FontSize="20"  />
         </StackLayout>
+
         <StackLayout
             Orientation="Horizontal">
-            <Label Text="Temperature: " />
+            <Label Text="Humidity: "
+                   FontSize="20"  />
             <Label
                 HorizontalTextAlignment="End"
                 HorizontalOptions="EndAndExpand"
-                Text="{Binding WeatherForeCast.Temperature}" />
+                Text="{Binding Humidity}"
+                FontSize="20"  />
         </StackLayout>
+
         <StackLayout
             Orientation="Horizontal">
-            <Label Text="Time: " />
+            <Label Text="Pressure: "
+                   FontSize="20"  />
             <Label
                 HorizontalTextAlignment="End"
                 HorizontalOptions="EndAndExpand"
-                Text="{Binding WeatherForeCast.Time}" />
+                Text="{Binding Pressure}"
+                FontSize="20"  />
         </StackLayout>
+
         <StackLayout
             Orientation="Horizontal">
-            <Label Text="Cloud cover: " />
+            <Label Text="Rain: "
+                   FontSize="20"  />
             <Label
                 HorizontalTextAlignment="End"
                 HorizontalOptions="EndAndExpand"
-                Text="{Binding WeatherForeCast.CloudCover}" />
+                Text="{Binding Rain}"
+                FontSize="20"  />
         </StackLayout>
+
         <StackLayout
             Orientation="Horizontal">
-            <Label Text="Condition: " />
+            <Label Text="Snow: "
+                   FontSize="20"  />
             <Label
                 HorizontalTextAlignment="End"
                 HorizontalOptions="EndAndExpand"
-                Text="{Binding WeatherForeCast.Condition}" />
+                Text="{Binding Snow}"
+                FontSize="20"  />
         </StackLayout>
+
         <StackLayout
             Orientation="Horizontal">
-            <Label Text="Humidity: " />
+            <Label Text="Wind direction: "
+                   FontSize="20"  />
             <Label
                 HorizontalTextAlignment="End"
                 HorizontalOptions="EndAndExpand"
-                Text="{Binding WeatherForeCast.Humidity}" />
+                Text="{Binding WindDirection}"
+                FontSize="20"  />
         </StackLayout>
+
         <StackLayout
             Orientation="Horizontal">
-            <Label Text="Pressure: " />
+            <Label Text="Wind speed: "
+                   FontSize="20"  />
             <Label
                 HorizontalTextAlignment="End"
                 HorizontalOptions="EndAndExpand"
-                Text="{Binding WeatherForeCast.Pressure}" />
-        </StackLayout>
-        <StackLayout
-            Orientation="Horizontal">
-            <Label Text="Rain: " />
-            <Label
-                HorizontalTextAlignment="End"
-                HorizontalOptions="EndAndExpand"
-                Text="{Binding WeatherForeCast.Rain}" />
-        </StackLayout>
-        <StackLayout
-            Orientation="Horizontal">
-            <Label Text="Snow: " />
-            <Label
-                HorizontalTextAlignment="End"
-                HorizontalOptions="EndAndExpand"
-                Text="{Binding WeatherForeCast.Snow}" />
-        </StackLayout>
-        <StackLayout
-            Orientation="Horizontal">
-            <Label Text="Wind direction: " />
-            <Label
-                HorizontalTextAlignment="End"
-                HorizontalOptions="EndAndExpand"
-                Text="{Binding WeatherForeCast.WindDirection}" />
-        </StackLayout>
-        <StackLayout
-            Orientation="Horizontal">
-            <Label Text="Wind speed: " />
-            <Label
-                HorizontalTextAlignment="End"
-                HorizontalOptions="EndAndExpand"
-                Text="{Binding WeatherForeCast.WindSpeed}" />
+                Text="{Binding WindSpeed}"
+                FontSize="20"  />
         </StackLayout>
     </StackLayout>
 
