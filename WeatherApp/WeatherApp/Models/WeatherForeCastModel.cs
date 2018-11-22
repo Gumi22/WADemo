@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WeatherApp;
-using Xamarin.Forms;
+using SQLite;
 
-namespace WeatherApp
+namespace WeatherApp.Models
 {
-    public class WeatherForeCast : ObservableObject
+    [Table("weatherforecast")]
+    public class WeatherForeCastModel : ObservableObject
     {
         private string _icon;
         private int _condition;
@@ -21,22 +19,37 @@ namespace WeatherApp
         private double _rain; //rain im mm for the last 3 hours
         private double _snow; //snow in mm for the last 3 hours
 
+        [PrimaryKey, AutoIncrement, Column("_id")]
+        public int Id { get; set; }
+        [Column("icon")]
         public string Icon { get => _icon; set => SetProperty(ref _icon, value); }
+        [Column("condition")]
         public int Condition{ get => _condition; set => SetProperty(ref _condition, value); }
+        [Column("description")]
         public string Description { get => _description; set => SetProperty(ref _description, value); }
+        [Column("time")]
         public DateTime Time { get => _time; set => SetProperty(ref _time, value); }
+        [Column("temperature")]
         public double Temperature { get => _temperature; set => SetProperty(ref _temperature, value); }
+        [Column("pressure")]
         public double Pressure { get => _pressure; set => SetProperty(ref _pressure, value); }
+        [Column("humidity")]
         public double Humidity { get => _humidity; set => SetProperty(ref _humidity, value); }
+        [Column("cloudcover")]
         public double CloudCover { get => _cloudCover; set => SetProperty(ref _cloudCover, value); }
+        [Column("windspeed")]
         public double WindSpeed { get => _windSpeed; set => SetProperty(ref _windSpeed, value); }
+        [Column("winddirection")]
         public double WindDirection { get => _windDirection; set => SetProperty(ref _windDirection, value); }
+        [Column("rain")]
         public double Rain { get => _rain; set => SetProperty(ref _rain, value); }
+        [Column("snow")]
         public double Snow { get => _snow; set => SetProperty(ref _snow, value); }
 
 
-        public WeatherForeCast()
+        public WeatherForeCastModel()
         {
+            Id = 0;
             Icon = "";
             Condition = 0;
             Description = "";
@@ -49,30 +62,6 @@ namespace WeatherApp
             WindSpeed = 0f;
             Rain = 0f;
             Snow = 0f;
-        }
-
-        private void SetRandomValues()
-        {
-            Random rnd = new Random();
-            Icon = "C://" + rnd.Next();
-            Condition = rnd.Next();
-            Description = "Rain times " + rnd.Next(100);
-            Time = RandomDay(rnd);
-            Temperature = rnd.NextDouble();
-            Humidity = rnd.NextDouble();
-            Pressure = rnd.NextDouble();
-            CloudCover = rnd.NextDouble();
-            WindDirection = rnd.NextDouble();
-            WindSpeed = rnd.NextDouble();
-            Rain = rnd.NextDouble();
-            Snow = rnd.NextDouble();
-        }
-
-        private DateTime RandomDay(Random gen)
-        {
-            DateTime start = DateTime.Now;
-            int range = 60 * 24 * 31;
-            return start.AddMinutes(gen.Next(range));
         }
 
     }

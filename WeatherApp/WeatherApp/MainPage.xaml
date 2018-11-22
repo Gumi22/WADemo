@@ -3,6 +3,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:WeatherApp"
+             xmlns:viewModels="clr-namespace:WeatherApp.ViewModels;assembly=WeatherApp"
+             xmlns:helpers="clr-namespace:WeatherApp.Helpers;assembly=WeatherApp"
              x:Class="WeatherApp.MainPage"
              Title="{Binding Title}">
 
@@ -50,7 +52,7 @@
                 </StackLayout>
             </ViewCell>
         </DataTemplate>
-        <local:WeatherForeCastListViewDataTemplateSelector
+        <helpers:WeatherForeCastListViewDataTemplateSelector
             x:Key="RowDataTemplateSelector"
             FirstRowTemplate="{StaticResource FirstRowTemplate}"
             OtherRowTemplate="{StaticResource OtherRowTemplate}" />
@@ -61,7 +63,7 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.BindingContext>
-        <local:WeatherForeCastListViewModel />
+        <viewModels:WeatherForeCastListViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>

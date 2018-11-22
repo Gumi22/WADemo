@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using WeatherApp.ViewModels;
 using Xamarin.Forms;
 
-namespace WeatherApp
+namespace WeatherApp.Helpers
 {
     class WeatherForeCastListViewDataTemplateSelector : DataTemplateSelector
     {

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
+﻿using WeatherApp.Models;
 
-namespace WeatherApp
+namespace WeatherApp.ViewModels
 {
     class WeatherForeCastListItemViewModel : WeatherForeCastViewModel
     {
@@ -12,9 +9,9 @@ namespace WeatherApp
 
         public bool IsFirst => Parent?.IsFirst(this) ?? false;
 
-        public WeatherForeCastListItemViewModel(WeatherForeCastListViewModel parent, WeatherForeCast model)
+        public WeatherForeCastListItemViewModel(WeatherForeCastListViewModel parent, WeatherForeCastModel model)
         {
-            WeatherForeCast = model;
+            WeatherForeCastModel = model;
             Parent = parent;
         }
 

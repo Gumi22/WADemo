@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 using System.Diagnostics;
+using WeatherApp.Models;
 
 namespace WeatherApp
 {
@@ -22,7 +23,7 @@ namespace WeatherApp
         public WeatherForeCastService()
         {}
 
-        public async Task<IEnumerable<WeatherForeCast>> GetItemsAsync()
+        public async Task<List<WeatherForeCastModel>> GetItemsAsync()
         {
             try
             {
@@ -32,7 +33,7 @@ namespace WeatherApp
 
                 using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
                 {
-                    IEnumerable<WeatherForeCast> ret = await Task.Run(() =>
+                    var ret = await Task.Run(() =>
                     {
 
                         if (response.StatusCode != HttpStatusCode.OK)

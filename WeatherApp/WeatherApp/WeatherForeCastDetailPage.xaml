@@ -3,11 +3,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:WeatherApp"
+             xmlns:viewModels="clr-namespace:WeatherApp.ViewModels;assembly=WeatherApp"
              x:Class="WeatherApp.WeatherForeCastDetailPage"
              Title="{Binding Title}">
 
     <ContentPage.BindingContext>
-        <local:WeatherForeCastViewModel />
+        <viewModels:WeatherForeCastViewModel />
     </ContentPage.BindingContext>
 
 

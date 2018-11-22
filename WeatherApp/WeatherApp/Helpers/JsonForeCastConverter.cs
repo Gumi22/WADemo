@@ -4,14 +4,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using WeatherApp.Models;
 
 namespace WeatherApp
 {
     class JsonForeCastConverter
     {
-        public List<WeatherForeCast> GetForeCasts(Stream jsonStream)
+        public List<WeatherForeCastModel> GetForeCasts(Stream jsonStream)
         {
-            var forecasts = new List<WeatherForeCast>();
+            var forecasts = new List<WeatherForeCastModel>();
 
             using (StreamReader sr = new StreamReader(jsonStream))
             {
@@ -28,7 +29,7 @@ namespace WeatherApp
                     var jsonForecasts = JObject.Parse(jsonString)["list"];
                     foreach (var jsonForecast in jsonForecasts)
                     {
-                        WeatherForeCast forecast = new WeatherForeCast();
+                        WeatherForeCastModel forecast = new WeatherForeCastModel();
                         Debug.WriteLine(jsonForecast["rain"]);
                         
                         try

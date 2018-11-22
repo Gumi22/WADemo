@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using WeatherApp;
+using WeatherApp.Helpers;
 using Xamarin.Forms;
 
-namespace WeatherApp
+namespace WeatherApp.ViewModels
 {
     class WeatherForeCastListViewModel : BaseViewModel
     {
@@ -32,13 +30,16 @@ namespace WeatherApp
 
             LoadDataCommand = new Command(async () => await ExecuteLoadDataCommand());
 
-            LoadDataCommand.Execute(this);
+            WeatherForeCastDB.Instance.DataUpdated += DatabaseUpdated;
+
+#pragma warning disable CS4014 // Await ist hier denke ich unnötig, weil wir nicht auf ein Ergebnis warten und wir nicht von dem Status hier abhängig sind
+            ExecuteLoadItemsCommand();
+#pragma warning restore CS4014
         }
 
         public async Task ExecuteLoadDataCommand()
         {
-            if (IsBusy)
-            {
+            if (IsBusy){
                 return;
             }
 
@@ -46,12 +47,7 @@ namespace WeatherApp
             {
                 IsBusy = true;
                 var forecasts = await new WeatherForeCastService().GetItemsAsync();
-                var itemList = new List<WeatherForeCastListItemViewModel>();
-                foreach (var fc in forecasts)
-                {
-                    itemList.Add(new WeatherForeCastListItemViewModel(this, fc));
-                }
-                WeatherForeCastList = new ObservableCollection<WeatherForeCastListItemViewModel>(itemList);
+                var ids = await WeatherForeCastDB.Instance.SaveItemsAsync(forecasts);
             }
             catch (Exception e)
             {
@@ -61,6 +57,22 @@ namespace WeatherApp
             {
                 IsBusy = false;
             }
+        }
+
+        async Task ExecuteLoadItemsCommand()
+        {
+            var items = await WeatherForeCastDB.Instance.GetItemsAsync();
+            var itemList = new List<WeatherForeCastListItemViewModel>();
+            foreach (var fc in items)
+            {
+                itemList.Add(new WeatherForeCastListItemViewModel(this, fc));
+            }
+            WeatherForeCastList = new ObservableCollection<WeatherForeCastListItemViewModel>(itemList);
+        }
+
+        async void DatabaseUpdated(object sender, EventArgs e)
+        {
+            await ExecuteLoadItemsCommand();
         }
     }
 }
