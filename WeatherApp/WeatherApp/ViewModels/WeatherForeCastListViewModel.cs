@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using WeatherApp.Helpers;
 using Xamarin.Forms;
@@ -39,15 +40,19 @@ namespace WeatherApp.ViewModels
 
         public async Task ExecuteLoadDataCommand()
         {
-            if (IsBusy){
+            if (IsBusy)
+            {
                 return;
             }
 
             try
             {
                 IsBusy = true;
-                var forecasts = await new WeatherForeCastService().GetItemsAsync();
-                var ids = await WeatherForeCastDB.Instance.SaveItemsAsync(forecasts);
+                bool success = await WeatherDataFetcher.UpdateWeatherForecastDbAsync();
+                if (!success)
+                {
+                    Debug.WriteLine("No new Data has been fetched :(");
+                }
             }
             catch (Exception e)
             {
@@ -63,11 +68,18 @@ namespace WeatherApp.ViewModels
         {
             var items = await WeatherForeCastDB.Instance.GetItemsAsync();
             var itemList = new List<WeatherForeCastListItemViewModel>();
-            foreach (var fc in items)
+            if (items.Count <= 0)
             {
-                itemList.Add(new WeatherForeCastListItemViewModel(this, fc));
+                await ExecuteLoadDataCommand();
             }
-            WeatherForeCastList = new ObservableCollection<WeatherForeCastListItemViewModel>(itemList);
+            else
+            {
+                foreach (var fc in items)
+                {
+                    itemList.Add(new WeatherForeCastListItemViewModel(this, fc));
+                }
+                WeatherForeCastList = new ObservableCollection<WeatherForeCastListItemViewModel>(itemList);
+            }
         }
 
         async void DatabaseUpdated(object sender, EventArgs e)

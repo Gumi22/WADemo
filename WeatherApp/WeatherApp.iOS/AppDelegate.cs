@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Foundation;
 using UIKit;
+using WeatherApp.Helpers;
 
 namespace WeatherApp.iOS
 {
@@ -23,7 +24,8 @@ namespace WeatherApp.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            UIApplication.SharedApplication.SetMinimumBackgroundFetchInterval(UIApplication.BackgroundFetchIntervalMinimum);
+            UIApplication.SharedApplication.SetMinimumBackgroundFetchInterval(UIApplication
+                .BackgroundFetchIntervalMinimum);
 
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
@@ -35,8 +37,20 @@ namespace WeatherApp.iOS
         public override void PerformFetch(UIApplication app, Action<UIBackgroundFetchResult> completionHandler)
         {
             Debug.WriteLine("FETCH");
-            Thread.Sleep(100);
-            completionHandler(UIBackgroundFetchResult.NewData);
+            try
+            {
+                bool success = WeatherDataFetcher.UpdateWeatherForecastDbAsync().Result;
+                if (!success)
+                {
+                    completionHandler(UIBackgroundFetchResult.NoData);
+                }
+
+                completionHandler(UIBackgroundFetchResult.NewData);
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine("Error occured during Background Fetching: " + e.StackTrace);
+            }
         }
     }
 }

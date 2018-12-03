@@ -22,6 +22,8 @@ namespace WeatherApp
                 DemoList.RefreshCommand.Execute(DemoList);
                 DemoList.EndRefresh();
             }; 
+
+            //ToDo:
         }
 
         private void ItemClick(object sender, SelectedItemChangedEventArgs e)

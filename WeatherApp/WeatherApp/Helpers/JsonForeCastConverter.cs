@@ -19,22 +19,18 @@ namespace WeatherApp
                 var jsonString = sr.ReadToEnd();
                 if (string.IsNullOrWhiteSpace(jsonString))
                 {
-                    Debug.WriteLine("Response body was empty");
                     return null;
                 }
                 else
                 {
-                    Debug.WriteLine($"Response was {jsonString}");
 
                     var jsonForecasts = JObject.Parse(jsonString)["list"];
                     foreach (var jsonForecast in jsonForecasts)
                     {
                         WeatherForeCastModel forecast = new WeatherForeCastModel();
-                        Debug.WriteLine(jsonForecast["rain"]);
                         
                         try
                         {
-                            Debug.WriteLine("Loading forecast");
                             forecast.Description = jsonForecast["weather"]?[0]?["description"]?.Value<string>() ?? "";
                             forecast.CloudCover = jsonForecast["clouds"]?["all"]?.Value<double>() ?? 0f;
                             forecast.Condition = jsonForecast["weather"]?[0]?["id"]?.Value<int>() ?? 0;
