@@ -23,6 +23,8 @@ namespace WeatherApp
         public WeatherForeCastService()
         {}
 
+        //ToDo: Start this if DB is empty or not data is not recent enough
+
         public async Task<List<WeatherForeCastModel>> GetItemsAsync()
         {
             try

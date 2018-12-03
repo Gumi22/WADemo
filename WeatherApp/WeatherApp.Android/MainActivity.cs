@@ -20,6 +20,8 @@ namespace WeatherApp.Droid
 
             base.OnCreate(savedInstanceState);
 
+            Util.ScheduleJob(this);
+
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);

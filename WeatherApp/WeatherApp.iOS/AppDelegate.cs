@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-
+using System.Threading;
 using Foundation;
 using UIKit;
 
@@ -22,10 +23,20 @@ namespace WeatherApp.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            UIApplication.SharedApplication.SetMinimumBackgroundFetchInterval(UIApplication.BackgroundFetchIntervalMinimum);
+
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
+        }
+
+        [Export("application:performFetchWithCompletionHandler:")]
+        public override void PerformFetch(UIApplication app, Action<UIBackgroundFetchResult> completionHandler)
+        {
+            Debug.WriteLine("FETCH");
+            Thread.Sleep(100);
+            completionHandler(UIBackgroundFetchResult.NewData);
         }
     }
 }

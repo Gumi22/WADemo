@@ -71,6 +71,7 @@
     <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="27.0.2.1" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackgroundDataLoaderJobService.cs" />
     <Compile Include="FilePathService.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="SettingsActivity.cs" />
     <Compile Include="SettingsFragment.cs" />
     <Compile Include="SettingsService.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
