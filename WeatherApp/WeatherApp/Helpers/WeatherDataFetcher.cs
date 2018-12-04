@@ -8,6 +8,8 @@ namespace WeatherApp.Helpers
 {
     public static class WeatherDataFetcher
     {
+        public static DateTime LastUpDate { get; private set; }
+
         public static async Task<bool> UpdateWeatherForecastDbAsync()
         {
             try
@@ -16,6 +18,7 @@ namespace WeatherApp.Helpers
                 var ids = await WeatherForeCastDB.Instance.SaveItemsAsync(forecasts); //.Result is used here, because doing things asynchronously here wouldn't work
                 if (ids > 0)
                 {
+                    LastUpDate = DateTime.Now;
                     return true;
                 }
             }

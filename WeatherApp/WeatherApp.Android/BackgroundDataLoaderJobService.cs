@@ -19,11 +19,13 @@ namespace WeatherApp.Droid
     [Service(Name = "com.companyname.WeatherApp.BackgroundDataLoaderJobService", Permission = "android.permission.BIND_JOB_SERVICE", Exported = true)]
     class BackgroundDataLoaderJobService : JobService
     {
-        private bool _reschedule = false;
+        private bool _reschedule = true;
+        private Task _downloadTask;
 
         public override bool OnStartJob(JobParameters @params)
         {
-            Task.Run(async () =>
+            _reschedule = true;
+            _downloadTask = Task.Run(async () =>
             {
                 Debug.WriteLine("FETCH");
                 try
@@ -58,6 +60,7 @@ namespace WeatherApp.Droid
         public override bool OnStopJob(JobParameters @params)
         {
             Debug.WriteLine("Stopped Job");
+            _downloadTask.Dispose();
             return _reschedule;
         }
     }

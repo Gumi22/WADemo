@@ -19,17 +19,18 @@ namespace WeatherApp.Droid
         {
             Debug.WriteLine(typeof(BackgroundDataLoaderJobService));
             var javaClass = Java.Lang.Class.FromType(typeof(BackgroundDataLoaderJobService));
-            var jobBuilder = new JobInfo.Builder(1, new ComponentName(context, javaClass));
+            var jobBuilder = new JobInfo.Builder(1, new ComponentName(context, javaClass))
+                .SetRequiredNetworkType(NetworkType.NotRoaming);
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
             {
                 Debug.WriteLine("Service min period: " + JobInfo.MinPeriodMillis);
-                jobBuilder.SetPeriodic(900000, 1000); //15 min +/- 1 Second
+                jobBuilder.SetPeriodic(3600000, 10000); // => 60 min +/- 10 Seconds
             }
             else
             {
-                jobBuilder.SetMinimumLatency(5000);
-                jobBuilder.SetOverrideDeadline(10000);
+                jobBuilder.SetMinimumLatency(3595000); // min => 59 min 55 Seconds
+                jobBuilder.SetOverrideDeadline(3605000); // max => 60 min 05 Seconds
             }
 
             Debug.WriteLine("Starting Job");

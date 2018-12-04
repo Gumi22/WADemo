@@ -68,7 +68,9 @@ namespace WeatherApp.ViewModels
         {
             var items = await WeatherForeCastDB.Instance.GetItemsAsync();
             var itemList = new List<WeatherForeCastListItemViewModel>();
-            if (items.Count <= 0)
+            //if DatabaseList is empty or the Values are old:
+            if (items.Count <= 0 ||
+                WeatherDataFetcher.LastUpDate <= DateTime.Now.AddDays(-3f) )
             {
                 await ExecuteLoadDataCommand();
             }
