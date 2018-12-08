@@ -1,4 +1,5 @@
 ﻿using System;
+using WeatherApp.Interfaces;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -17,6 +18,7 @@ namespace WeatherApp
         protected override void OnStart()
         {
             // Handle when your app starts
+            DependencyService.Get<INotificationService>().Init();
         }
 
         protected override void OnSleep()

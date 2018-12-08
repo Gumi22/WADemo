@@ -20,6 +20,7 @@ namespace WeatherApp.Helpers
         {
             database = new SQLiteAsyncConnection(dbPath);
             database.CreateTableAsync<WeatherForeCastModel>().Wait();
+            SendNotificatCommand = new Command<string>(ExecuteSendNotificationCommand); //Todo move this to a good place :D
         }
 
         public static WeatherForeCastDB Instance
@@ -73,6 +74,15 @@ namespace WeatherApp.Helpers
         {
             var handler = DataUpdated;
             handler?.Invoke(this, EventArgs.Empty);
+        }
+
+        public Command SendNotificatCommand { get; set; } //ToDo: evtl im Viewmodel? oder Command garned nötig, weil ich immer nur einfach sendnotification aufrufe
+
+        void ExecuteSendNotificationCommand(string text)
+        {
+            DependencyService.Get<INotificationService>()
+                .SendNotification(text);
+
         }
     }
 }

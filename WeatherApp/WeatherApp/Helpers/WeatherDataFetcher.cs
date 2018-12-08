@@ -15,7 +15,7 @@ namespace WeatherApp.Helpers
             try
             {
                 var forecasts = await new WeatherForeCastService().GetItemsAsync();
-                var ids = await WeatherForeCastDB.Instance.SaveItemsAsync(forecasts); //.Result is used here, because doing things asynchronously here wouldn't work
+                var ids = await WeatherForeCastDB.Instance.SaveItemsAsync(forecasts);
                 if (ids > 0)
                 {
                     LastUpDate = DateTime.Now;

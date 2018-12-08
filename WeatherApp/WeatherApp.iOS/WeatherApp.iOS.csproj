@@ -93,6 +93,7 @@
     <Compile Include="FilePathService.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="NotificationService.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="SettingsService.cs" />
     <None Include="Entitlements.plist" />
