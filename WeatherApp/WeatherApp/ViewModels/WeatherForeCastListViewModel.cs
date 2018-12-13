@@ -66,7 +66,7 @@ namespace WeatherApp.ViewModels
 
         async Task ExecuteLoadItemsCommand()
         {
-            var items = await WeatherForeCastDB.Instance.GetItemsAsync();
+            var items = await WeatherForeCastDB.Instance.GetItemsAscTimeAsync();
             var itemList = new List<WeatherForeCastListItemViewModel>();
             //if DatabaseList is empty or the Values are old:
             if (items.Count <= 0 ||

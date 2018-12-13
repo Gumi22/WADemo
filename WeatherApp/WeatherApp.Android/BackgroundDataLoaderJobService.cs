@@ -30,7 +30,7 @@ namespace WeatherApp.Droid
                 Debug.WriteLine("FETCH");
                 try
                 {
-                    bool success = WeatherDataFetcher.UpdateWeatherForecastDbAsync().Result;
+                    bool success = await WeatherDataFetcher.UpdateWeatherForecastDbAsync();
                     if (!success)
                     {
                         Debug.WriteLine("No new Data was fetched during background task");

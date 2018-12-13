@@ -42,6 +42,7 @@ namespace WeatherApp
                             forecast.Temperature = jsonForecast["main"]?["temp"]?.Value<double>() ?? 0f;
                             forecast.WindDirection = jsonForecast["wind"]?["deg"]?.Value<double>() ?? 0f;
                             forecast.WindSpeed = jsonForecast["wind"]?["speed"]?.Value<double>() ?? 0f;
+                            forecast.Time = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(jsonForecast["dt"]?.Value<double>() ?? DateTime.Now.ToOADate());
                         }
                         catch(Exception e)
                         {

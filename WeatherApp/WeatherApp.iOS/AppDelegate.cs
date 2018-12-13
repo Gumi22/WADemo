@@ -27,7 +27,7 @@ namespace WeatherApp.iOS
             UIApplication.SharedApplication.SetMinimumBackgroundFetchInterval(60*60); // => 3600 seconds
 
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
+            LoadApplication(new App(-1));
 
             return base.FinishedLaunching(app, options);
         }

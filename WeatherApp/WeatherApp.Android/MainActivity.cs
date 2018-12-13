@@ -1,5 +1,6 @@
 ﻿using System;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
@@ -24,8 +25,13 @@ namespace WeatherApp.Droid
 
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
 
+            var id = Intent.Extras?.GetInt("ID", -1) ?? -1;
+            System.Diagnostics.Debug.WriteLine("ID: " + id);
+
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App());
+            LoadApplication(new App(id));
         }
+
+        public Context AppContext => this.ApplicationContext;
     }
 }

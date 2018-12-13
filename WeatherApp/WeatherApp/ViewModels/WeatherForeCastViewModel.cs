@@ -20,7 +20,7 @@ namespace WeatherApp.ViewModels
             WeatherForeCastModel = new WeatherForeCastModel();
         }
 
-        public string Icon => "http://openweathermap.org/img/w/" + _weatherForeCastModel.Icon + ".png";
+        public string Icon => SystemSettings.PictureUrl + _weatherForeCastModel.Icon + SystemSettings.PictureFileEnding;
         public string Condition => _weatherForeCastModel.Condition.ToString();
         public string Description => _weatherForeCastModel.Description;
         public string Time => _weatherForeCastModel.Time.ToString(CultureInfo.CurrentCulture);

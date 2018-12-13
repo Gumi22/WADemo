@@ -8,11 +8,11 @@ namespace WeatherApp
 {
     public partial class App : Application
     {
-        public App()
+        public App(int id)
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new NavigationPage(new MainPage(id));
         }
 
         protected override void OnStart()

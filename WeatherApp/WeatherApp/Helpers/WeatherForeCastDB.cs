@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using SQLite;
@@ -9,7 +13,7 @@ using Xamarin.Forms;
 
 namespace WeatherApp.Helpers
 {
-    class WeatherForeCastDB
+    public class WeatherForeCastDB
     {
         readonly SQLiteAsyncConnection database;
         static WeatherForeCastDB _instance;
@@ -20,7 +24,6 @@ namespace WeatherApp.Helpers
         {
             database = new SQLiteAsyncConnection(dbPath);
             database.CreateTableAsync<WeatherForeCastModel>().Wait();
-            SendNotificatCommand = new Command<string>(ExecuteSendNotificationCommand); //Todo move this to a good place :D
         }
 
         public static WeatherForeCastDB Instance
@@ -43,46 +46,68 @@ namespace WeatherApp.Helpers
             }
         }
 
-        public Task<List<WeatherForeCastModel>> GetItemsAsync()
+        public async Task<List<WeatherForeCastModel>> GetItemsAscTimeAsync()
         {
-            return database.QueryAsync<WeatherForeCastModel>("SELECT * FROM weatherforecast ORDER BY time ASC");
+            var list = await database.QueryAsync<WeatherForeCastModel>("SELECT * FROM weatherforecast ORDER BY time ASC");
+            var removed = list.RemoveAll(fc => fc.Time <= DateTime.Now.AddHours(-2));
+            return list;
         }
+
+        public async Task<WeatherForeCastModel> GetItemAsync(int id)
+        {
+            var list = await database.QueryAsync<WeatherForeCastModel>("SELECT * FROM weatherforecast");
+            //ToDo: get right item from List
+            return list.First();
+        } 
 
         public async Task<int> SaveItemsAsync(List<WeatherForeCastModel> items)
         {
-            int ret = 0;
+            //ToDo: remove this line:
+            //await database.DeleteAllAsync<WeatherForeCastModel>();
+
+
+            var updatedItems = new List<WeatherForeCastModel>();
+            var insertedItems = new List<WeatherForeCastModel>();
             if (items.FindAll(item => item.Id != 0).Count == 0)
-                ret = await database.InsertAllAsync(items);
-            else if(items.FindAll(item => item.Id == 0).Count == 0)
-                ret = await database.UpdateAllAsync(items);
+            {
+                await database.InsertAllAsync(items);
+                insertedItems = items;
+            }
+            else if (items.FindAll(item => item.Id <= 0).Count == 0)
+            {
+                await database.UpdateAllAsync(items);
+                updatedItems = items;
+            }
             else
             {
                 foreach (var item in items)
                 {
-                    if (item.Id != 0)
-                        ret += await database.InsertAsync(items);
+                    if (item.Id <= 0)
+                    {
+                        insertedItems.Add(item);
+                        await database.InsertAsync(item);
+                    }
                     else
-                        ret += await database.UpdateAsync(items);
+                    {
+                        updatedItems.Add(item);
+                        await database.UpdateAsync(item);
+                    }
                 }
             }
-            if (ret > 0)
-                NotifyDataUpdated();
-            return ret;
+            if (updatedItems.Any() || insertedItems.Any())
+                NotifyDataUpdated(updatedItems, insertedItems);
+            return insertedItems.Count + updatedItems.Count;
         }
 
-        void NotifyDataUpdated()
+        void NotifyDataUpdated(List<WeatherForeCastModel> updatedItems, List<WeatherForeCastModel> insertedItems)
         {
             var handler = DataUpdated;
             handler?.Invoke(this, EventArgs.Empty);
-        }
-
-        public Command SendNotificatCommand { get; set; } //ToDo: evtl im Viewmodel? oder Command garned nötig, weil ich immer nur einfach sendnotification aufrufe
-
-        void ExecuteSendNotificationCommand(string text)
-        {
-            DependencyService.Get<INotificationService>()
-                .SendNotification(text);
-
+            foreach (var forecast in insertedItems)
+            {
+                Debug.WriteLine("Sending new Notification");
+                DependencyService.Get<INotificationService>().SendNewForecastNotification(forecast);
+            }
         }
     }
 }

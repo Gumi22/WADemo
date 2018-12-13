@@ -7,8 +7,10 @@ using WeatherApp;
 using Foundation;
 using UIKit;
 using UserNotifications;
+using WeatherApp.Helpers;
 using WeatherApp.iOS;
 using WeatherApp.Interfaces;
+using WeatherApp.Models;
 using Xamarin.Forms;
 
 [assembly:Dependency(typeof(NotificationService))]
@@ -27,7 +29,7 @@ namespace WeatherApp.iOS
                 });
             UNUserNotificationCenter.Current.Delegate = new UserNotificationCenterDelegate();
         }
-        public void SendNotification(string title, string id)
+        public void SendNewForecastNotification(WeatherForeCastModel forecast)
         {
             if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
             {
@@ -35,21 +37,32 @@ namespace WeatherApp.iOS
                 {
                     if (settings.AlertSetting != UNNotificationSetting.Enabled) return;
 
-                    Debug.WriteLine("I want to notify you about sth: " + title);
+                    Debug.WriteLine("I want to notify you about sth: " + forecast);
+
                     var content = new UNMutableNotificationContent()
                     {
-                        Title = "Notification",
-                        Body = title
+                        Title = "New  Forecast for " + forecast.Time,
+                        Body = $"{forecast.Temperature} {SystemSettings.MeasurementUnitTemperature}, {forecast.Description}",
+                        Attachments = new UNNotificationAttachment[]
+                        {
+                            UNNotificationAttachment.FromIdentifier("image", 
+                                new NSUrl(new FilePathService().GetLocalFilePath(forecast.Icon)), 
+                                new UNNotificationAttachmentOptions(), 
+                                out var attachmentError)
+                        }
                     };
+
+                    Debug.WriteLine(attachmentError);
+
                     var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(1, false);
                     var request = UNNotificationRequest
-                        .FromIdentifier(id, content, trigger);
+                        .FromIdentifier(forecast.Id.ToString(), content, trigger);
                     UNUserNotificationCenter.Current.AddNotificationRequest(request,
                         error =>
                         {
                             if (error != null)
                             {
-                                Debug.WriteLine("Upsie: " + error);
+                                Debug.WriteLine("Upsiiii: " + error);
                             }
                         });
                 });
@@ -71,16 +84,20 @@ namespace WeatherApp.iOS
             }
 
             [Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]
-            public override void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response,
-                Action completionHandler)
+            public override void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
             {
                 switch (response.ActionIdentifier)
                 {
                     default:
                         if (response.IsDefaultAction)
                         {
-                            Debug.WriteLine("here you should start navigation to subpage after Data is loadded from DB");
-                        }else if (response.IsDismissAction)
+                            Debug.WriteLine("here you should start navigation to subpage after Data is loaded from DB");
+                            var stringIdentifier = response.Notification.Request.Identifier;
+                            var identifier = int.Parse(stringIdentifier);
+                            var model = WeatherForeCastDB.Instance.GetItemAsync(identifier);
+                            Xamarin.Forms.Application.Current.MainPage.Navigation.PushAsync(new WeatherForeCastDetailPage(model.Result));
+                        }
+                        else if (response.IsDismissAction)
                         {
                             Debug.WriteLine("handling custom dismiss action");
                         }

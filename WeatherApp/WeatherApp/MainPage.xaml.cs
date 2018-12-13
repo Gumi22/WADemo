@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WeatherApp.Helpers;
 using WeatherApp.ViewModels;
 using Xamarin.Forms;
 
@@ -10,8 +12,11 @@ namespace WeatherApp
 {
     public partial class MainPage : ContentPage
     {
-        public MainPage()
+        int _mId;
+        public MainPage(int id)
         {
+            _mId = id;
+            Debug.WriteLine("lululululu" + id);
             InitializeComponent();
 
             Options.IsEnabled = DependencyService.Get<ISettingsService>().SettingsDialogueAvailable;
@@ -22,8 +27,22 @@ namespace WeatherApp
                 DemoList.RefreshCommand.Execute(DemoList);
                 DemoList.EndRefresh();
             }; 
+        }
 
-            //ToDo:
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            Debug.WriteLine("lalalalala" + _mId);
+            if (_mId >= 0)
+            {
+                var id = _mId;
+                _mId = -1;
+                var forecast = WeatherForeCastDB.Instance.GetItemAsync(id).Result;
+                Debug.WriteLine("lololololololololo");
+                Task.Delay(5000).RunSynchronously();
+                Debug.WriteLine("lololololololololo");
+                ((Application.Current as App)?.MainPage as NavigationPage)?.PushAsync(new WeatherForeCastDetailPage(forecast));
+            }
         }
 
         private void ItemClick(object sender, SelectedItemChangedEventArgs e)

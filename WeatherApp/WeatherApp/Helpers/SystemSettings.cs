@@ -3,7 +3,7 @@ using Plugin.Settings.Abstractions;
 
 namespace WeatherApp.Helpers
 {
-    class SystemSettings
+    public static class SystemSettings
     {
         private static ISettings AppSettings => CrossSettings.Current;
         
@@ -90,6 +90,8 @@ namespace WeatherApp.Helpers
             }
         }
 
+        public static string PictureUrl => "http://openweathermap.org/img/w/";
 
+        public static string PictureFileEnding => ".png";
     }
 }

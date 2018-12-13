@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WeatherApp.Models;
 
 namespace WeatherApp.Interfaces
 {
     public interface INotificationService
     {
         void Init();
-        void SendNotification(string title, string id);
+        void SendNewForecastNotification(WeatherForeCastModel forecast);
     }
 }
