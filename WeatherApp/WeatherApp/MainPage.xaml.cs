@@ -16,7 +16,6 @@ namespace WeatherApp
         public MainPage(int id)
         {
             _mId = id;
-            Debug.WriteLine("lululululu" + id);
             InitializeComponent();
 
             Options.IsEnabled = DependencyService.Get<ISettingsService>().SettingsDialogueAvailable;
@@ -27,20 +26,21 @@ namespace WeatherApp
                 DemoList.RefreshCommand.Execute(DemoList);
                 DemoList.EndRefresh();
             }; 
+
+            //ToDo: Get The Location: or change position
+            var location = DependencyService.Get<ILocationService>().GetLocation().Result; //returns null be careful
+            Debug.WriteLine($"Location: {location?.Latitude??double.NaN}, {location?.Longitude??double.NaN}");
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            Debug.WriteLine("lalalalala" + _mId);
             if (_mId >= 0)
             {
                 var id = _mId;
                 _mId = -1;
                 var forecast = WeatherForeCastDB.Instance.GetItemAsync(id).Result;
-                Debug.WriteLine("lololololololololo");
-                Task.Delay(5000).RunSynchronously();
-                Debug.WriteLine("lololololololololo");
+                await Task.Delay(100);
                 ((Application.Current as App)?.MainPage as NavigationPage)?.PushAsync(new WeatherForeCastDetailPage(forecast));
             }
         }
