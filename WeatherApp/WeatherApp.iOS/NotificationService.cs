@@ -13,7 +13,7 @@ using WeatherApp.Interfaces;
 using WeatherApp.Models;
 using Xamarin.Forms;
 
-[assembly:Dependency(typeof(NotificationService))]
+[assembly: Dependency(typeof(NotificationService))]
 namespace WeatherApp.iOS
 {
     class NotificationService : INotificationService
@@ -43,16 +43,15 @@ namespace WeatherApp.iOS
                     {
                         Title = "New  Forecast for " + forecast.Time,
                         Body = $"{forecast.Temperature} {SystemSettings.MeasurementUnitTemperature}, {forecast.Description}",
-                        Attachments = new UNNotificationAttachment[]
+                        //ToDo: get the pictures here, can be done over internet I think
+                        /*Attachments = new UNNotificationAttachment[]
                         {
                             UNNotificationAttachment.FromIdentifier("image", 
                                 new NSUrl(new FilePathService().GetLocalFilePath(forecast.Icon)), 
                                 new UNNotificationAttachmentOptions(), 
                                 out var attachmentError)
-                        }
+                        }*/
                     };
-
-                    Debug.WriteLine(attachmentError);
 
                     var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(1, false);
                     var request = UNNotificationRequest
@@ -76,7 +75,7 @@ namespace WeatherApp.iOS
         internal class UserNotificationCenterDelegate : UNUserNotificationCenterDelegate
         {
             [Export("userNotificationCenter:willPresentNotification:withCompletionHandler:")]
-            public override void WillPresentNotification(UNUserNotificationCenter center, 
+            public override void WillPresentNotification(UNUserNotificationCenter center,
                 UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
             {
                 Debug.WriteLine("Active Notification: " + notification);
@@ -94,8 +93,10 @@ namespace WeatherApp.iOS
                             Debug.WriteLine("here you should start navigation to subpage after Data is loaded from DB");
                             var stringIdentifier = response.Notification.Request.Identifier;
                             var identifier = int.Parse(stringIdentifier);
-                            var model = WeatherForeCastDB.Instance.GetItemAsync(identifier);
-                            Xamarin.Forms.Application.Current.MainPage.Navigation.PushAsync(new WeatherForeCastDetailPage(model.Result));
+                            WeatherForeCastDB.Instance.GetItemAsync(identifier).ContinueWith(model =>
+                            {
+                                Xamarin.Forms.Application.Current.MainPage.Navigation.PushAsync(new WeatherForeCastDetailPage(model.Result));
+                            });
                         }
                         else if (response.IsDismissAction)
                         {

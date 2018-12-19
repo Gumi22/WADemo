@@ -28,19 +28,19 @@ namespace WeatherApp
             }; 
 
             //ToDo: Get The Location: or change position
-            var location = DependencyService.Get<ILocationService>().GetLocation().Result; //returns null be careful
-            Debug.WriteLine($"Location: {location?.Latitude??double.NaN}, {location?.Longitude??double.NaN}");
+            //var location = DependencyService.Get<ILocationService>().GetLocation().Result; //returns null be careful
+            //Debug.WriteLine($"Location: {location?.Latitude??double.NaN}, {location?.Longitude??double.NaN}");
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            if (_mId >= 0)
+            if (_mId > 0)
             {
                 var id = _mId;
                 _mId = -1;
-                var forecast = WeatherForeCastDB.Instance.GetItemAsync(id).Result;
-                await Task.Delay(100);
+                var forecast = await WeatherForeCastDB.Instance.GetItemAsync(id);
+                await Task.Delay(500);
                 ((Application.Current as App)?.MainPage as NavigationPage)?.PushAsync(new WeatherForeCastDetailPage(forecast));
             }
         }

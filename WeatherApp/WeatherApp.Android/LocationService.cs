@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Android;
@@ -17,6 +16,7 @@ using Android.Widget;
 using Plugin.CurrentActivity;
 using WeatherApp.Droid;
 using WeatherApp.Models;
+using Xamarin.Forms;
 
 [assembly: Dependency(typeof(LocationService))]
 
