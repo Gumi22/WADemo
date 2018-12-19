@@ -1,40 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using CoreLocation;
-using Foundation;
 using UIKit;
 using WeatherApp.iOS;
 using WeatherApp.Models;
+using Xamarin.Forms;
 
 [assembly: Dependency(typeof(LocationService))]
 namespace WeatherApp.iOS
 {
     class LocationService : ILocationService
     {
-        readonly CLLocationManager locationManager;
+        readonly CLLocationManager _locationManager;
 
         public LocationService()
         {
 
-            locationManager = new CLLocationManager();
+            _locationManager = new CLLocationManager();
         }
         public Task<Location> GetLocation()
         {
             if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
             {
-                locationManager.RequestWhenInUseAuthorization();
+                _locationManager.RequestWhenInUseAuthorization();
             }
 
-            if (locationManager.Location != null)
+            if (_locationManager.Location != null)
             {
                 return Task.FromResult(new Location
                 {
-                    Longitude = locationManager.Location.Coordinate.Longitude,
-                    Latitude = locationManager.Location.Coordinate.Latitude
+                    Longitude = _locationManager.Location.Coordinate.Longitude,
+                    Latitude = _locationManager.Location.Coordinate.Latitude
                 });
             }
             else

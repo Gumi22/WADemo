@@ -36,14 +36,37 @@ namespace WeatherApp.Helpers
 
         private static async Task<List<WeatherForeCastModel>> GetDifferences(List<WeatherForeCastModel> newForecasts)
         {
-            newForecasts.Sort((x, y) => x.Time.CompareTo(y.Time));
             var changedForecasts = new List<WeatherForeCastModel>();
+            if (newForecasts == null || newForecasts.Count <= 0)
+                return changedForecasts;
+
+            newForecasts.Sort((x, y) => x.Time.CompareTo(y.Time));
             var oldForeCasts = await WeatherForeCastDB.Instance.GetItemsAscTimeAsync();
-            
-            for (int i = 0, y = 0; i < newForecasts.Count; i ++)
+            oldForeCasts.Sort((x, y) => x.Time.CompareTo(y.Time));
+
+            //Get the offset of the new Forecasts:
+            int offset = 0;
+            while (offset < oldForeCasts.Count && newForecasts[0].Time > oldForeCasts[offset].Time)
             {
-                //ToDo: compare first new element to first old, if Date 3hours after: y++, else: add to changed, but if it is too similar, copy its id
-                changedForecasts = newForecasts;
+                offset++;
+            }
+
+            if (offset >= oldForeCasts.Count)
+                return newForecasts;
+
+
+            for (int i = 0; i < newForecasts.Count; i ++)
+            {
+                if (offset < oldForeCasts.Count)
+                {
+                    newForecasts[i].Id = oldForeCasts[offset].Id;
+                    changedForecasts.Add(newForecasts[i]);
+                }
+                else
+                {
+                    changedForecasts.Add(newForecasts[i]);
+                }
+                offset++;
             }
 
             return changedForecasts;

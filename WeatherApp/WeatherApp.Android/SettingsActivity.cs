@@ -23,9 +23,6 @@ namespace WeatherApp.Droid
             FragmentManager.BeginTransaction()
                 .Replace(Resource.Id.container, new SettingsFragment())
                 .Commit();
-
-
-
         }
     }
 }

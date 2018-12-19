@@ -56,7 +56,6 @@ namespace WeatherApp.Helpers
         public async Task<WeatherForeCastModel> GetItemAsync(int id)
         {
             var list = await database.QueryAsync<WeatherForeCastModel>("SELECT * FROM weatherforecast WHERE _id = " + id);
-            //ToDo: get right item from List
             return list.First();
         } 
 
@@ -64,7 +63,6 @@ namespace WeatherApp.Helpers
         {
             //ToDo: remove this line:
             //await database.DeleteAllAsync<WeatherForeCastModel>();
-
 
             var updatedItems = new List<WeatherForeCastModel>();
             var insertedItems = new List<WeatherForeCastModel>();
