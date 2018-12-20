@@ -26,7 +26,7 @@ namespace WeatherApp
                 DemoList.RefreshCommand.Execute(DemoList);
                 DemoList.EndRefresh();
             };
-
+            
             if (WeatherDataFetcher.LastUpDate.Date <= DateTime.Now.AddDays(-2)) //is this how you use async things???
             {
                 WeatherDataFetcher.UpdateWeatherForecastDbAsync();
@@ -36,7 +36,7 @@ namespace WeatherApp
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            if (_mId >= 0)
+            if (_mId > 0)
             {
                 var id = _mId;
                 _mId = -1;
